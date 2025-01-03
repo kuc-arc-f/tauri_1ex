@@ -1,11 +1,9 @@
-//import reactLogo from "./assets/react.svg";
-//import { invoke } from '@tauri-apps/api';
 //import "./App.css";
 import "./index.css";
-//import React, { useState, useEffect } from 'react';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 import { z } from 'zod';
+import ApiUtil from './lib/ApiUtil';
 //import  Head from "../components/Head";
 
 // Zod バリデーションスキーマ
@@ -29,9 +27,9 @@ function App() {
     const fetchTodos = async () => {
       try {
         //console.log("apiUrl=", API_URL)
-        const response = await axios.get(`${API_URL}/api/todo14?q=${searchQuery}`);
-        console.log(response.data);
-        setTodos(response.data.results);
+        const res = await ApiUtil.post(`/api/tauri_todo14_list`, {});
+        console.log(res.data)
+        setTodos(res.data.results);
       } catch (error) {
         console.error('Error fetching todos:', error);
       }
@@ -45,9 +43,9 @@ function App() {
       // バリデーション
       todoSchema.parse(newTodo);
       setErrors({});
-  
-      const response = await axios.post(API_URL + '/api/todo14', newTodo);
-      setTodos([...todos, response.data]);
+      const res = await ApiUtil.post(`/api/tauri_todo14_create`, newTodo);
+      console.log(res.data)
+      setTodos([...todos, res.data]);
       setIsAddModalOpen(false);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -68,9 +66,9 @@ function App() {
       // バリデーション
       todoSchema.parse(updatedTodo);
       setErrors({});
-  
-      const response = await axios.put(`${API_URL}/api/todo14/${updatedTodo.id}`, updatedTodo);
-      setTodos(todos.map(todo => todo.id === updatedTodo.id ? response.data : todo));
+      const res = await ApiUtil.post(`/api/tauri_todo14_update`, updatedTodo);
+      console.log(res.data)
+      setTodos(todos.map(todo => todo.id === updatedTodo.id ? res.data : todo));
       setIsEditModalOpen(false);
       setEditingTodo(null);
     } catch (error) {
@@ -89,7 +87,9 @@ function App() {
   // TODOの削除
   const handleDeleteTodo = async (id) => {
     try {
-      await axios.delete(`${API_URL}/api/todo14/${id}`);
+      const item = { id: id}
+      const res = await ApiUtil.post(`/api/tauri_todo14_delete`, item);
+      console.log(res.data)
       setTodos(todos.filter(todo => todo.id !== id));
     } catch (error) {
       console.error('Error deleting todo:', error);
@@ -125,7 +125,7 @@ function App() {
   return (
   <>
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Todo11</h1>
+      <h1 className="text-2xl font-bold mb-4">hello</h1>
 
       {/* 検索バー */}
       <div className="mb-4">
