@@ -29,6 +29,11 @@ VITE_API_URL=https://test
 https://github.com/kuc-arc-f/workers21/tree/main/svelte_chat
 
 ***
+### Blog
+
+* https://zenn.dev/link/comments/2290b919471ea9
+
+***
 # License
 
 * MIT
