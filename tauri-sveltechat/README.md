@@ -23,6 +23,9 @@ Tauri + Svelte Chat ,  d1 + workers
 ```
 VITE_API_URL=https://test
 ```
+### API Server
+https://github.com/kuc-arc-f/workers21/tree/main/svelte_chat
+
 ***
 # License
 
