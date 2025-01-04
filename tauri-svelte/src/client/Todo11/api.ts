@@ -1,29 +1,26 @@
 // src/lib/api.ts
 let API_BASE = import.meta.env.VITE_API_URL;
-
+import ApiUtil from '../../lib/ApiUtil';
 // 
 export async function fetchTodos() {
-  //API_BASE= await getSysApiUrl();
-  //console.log("apiUrl=", API_BASE);
-  const response = await fetch(`${API_BASE}/api/todo11`);
-  if (!response.ok) throw new Error('Failed to fetch todos');
-  return response.json();
+  const res = await ApiUtil.post('/api/tauri_todo11_list', {});
+  console.log(res)
+  return res.data;
 }
 
 export async function createTodo(todo: Todo) {
-  //API_BASE= await getSysApiUrl();
-  const response = await fetch(`${API_BASE}/api/todo11`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(todo),
-  });
-  console.log(response);
-  if (!response.ok) throw new Error('Failed to create todo');
-  return response.json();
+  const res = await ApiUtil.post('/api/tauri_todo11_create', todo );
+  console.log(res)
+  return res.data;
 }
 
 export async function updateTodo(id: number, todo: Todo) {
-  //API_BASE= await getSysApiUrl();
+  //tauri_todo11_update
+  todo.id= id;
+  const res = await ApiUtil.post('/api/tauri_todo11_update', todo );
+  console.log(res)
+  return res.data;
+/*
   const response = await fetch(`${API_BASE}/api/todo11/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
@@ -31,19 +28,16 @@ export async function updateTodo(id: number, todo: Todo) {
   });
   if (!response.ok) throw new Error('Failed to update todo');
   return response.json();
+*/
 }
 
 export async function deleteTodo(id: number) {
-  //API_BASE= await getSysApiUrl();
-  const response = await fetch(`${API_BASE}/api/todo11/${id}`, {
-    method: 'DELETE',
-  });
-  if (!response.ok) throw new Error('Failed to delete todo');
-  return response.json();
+  const item = {id: id}
+  const res = await ApiUtil.post('/api/tauri_todo11_delete', item );
+  console.log(res)
 }
 
 export async function searchTodos(query: string) {
-  //API_BASE= await getSysApiUrl();
   const response = await fetch(`${API_BASE}/api/todo11/search?q=${encodeURIComponent(query)}`);
   if (!response.ok) throw new Error('Failed to search todos');
   return response.json();
