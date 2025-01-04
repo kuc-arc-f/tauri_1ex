@@ -4,14 +4,15 @@
 
  Author  : 
 
- date    : 2025/01/02
+ date    : 2025/01/03
 
- update  : 2025/01/03
+ update  :
 
 ***
 ### Summary
 
-Tauri + React Svelte ,  d1 + workers
+Tauri + React Svelte , d1 + workers
+
 
 ***
 # License
