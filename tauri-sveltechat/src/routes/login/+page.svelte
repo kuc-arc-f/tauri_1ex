@@ -45,26 +45,7 @@ const handleSubmit = async function(){
     console.error(error);
     alert("Error");
   }
-  /* 
-  const response = await fetch("/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
-console.log("response=", response.ok);
-  if (response.ok) {
-    console.log("Login successful!");
-    location.href = "/";
-  } else {
-    console.log("Invalid credentials.");
-  }
-  */
 }
-/*
-  const handleSubmit = async function(){
-  } 
-
-*/
 </script>
   
 <!-- -->
@@ -88,7 +69,7 @@ console.log("response=", response.ok);
       </div>
 
       <div class="flex items-center justify-between mt-4">
-        <a href="/#/signup"> 
+        <a href="/signup"> 
           <button class="btn-outline-blue w-full">Signup</button>
         </a>
       </div>

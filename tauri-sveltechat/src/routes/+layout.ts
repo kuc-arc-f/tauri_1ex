@@ -8,7 +8,13 @@ import '../index.css';
 import LibCookie from '$lib/LibCookie';
 import LibConfig from '$lib/LibConfig';
 export async function load({ params, url }) {
-  if(url.pathname !== '/login') {
+  //if(url.pathname !== '/login') {
+  if(
+    !(
+      (url.pathname === '/login') ||
+      (url.pathname === '/signup')
+    )
+  ) {
     console.log("url.pathname=" , url.pathname);
     if(typeof(window) !== "undefined") {
       const authValue = LibCookie.getCookie(LibConfig.COOKIE_KEY_AUTH)
