@@ -6,7 +6,7 @@
 
  date    : 2025/01/03
 
- update  :
+ update  : 2025/01/04 
 
 ***
 
@@ -23,6 +23,8 @@ Tauri + Svelte Chat ,  d1 + workers
 ```
 VITE_API_URL=https://test
 ```
+
+***
 ### API Server
 https://github.com/kuc-arc-f/workers21/tree/main/svelte_chat
 
