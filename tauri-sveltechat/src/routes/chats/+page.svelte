@@ -11,7 +11,6 @@ import LibCommon from '../../lib/LibCommon';
 import CrudIndex from '../../client/chats/CrudIndex';
 import LibCookie from '../../lib/LibCookie';
 import ChatPost from '../../client/chats/ChatPost';
-//import Chat from './chats/Chat';
 import ModalPost from '../../client/ChatShow/ModalPost.svelte';
 import PaginateBox from '../../lib/components/PaginateBox.svelte';
 //import Head from "../components/Head.svelte";
@@ -120,8 +119,9 @@ const startProc= async function() {
 const parentGetList = async function (chat_id: number) {
   try {
 //console.log("parentGetList=", chat_id);
-      items = await ChatPost.getList(Number(id));
-      chat_posts = items;
+      const res = await ChatPost.getList(Number(id));
+      //console.log(items);
+      items = res.data;
   } catch (e) {
       console.error(e);
   }    

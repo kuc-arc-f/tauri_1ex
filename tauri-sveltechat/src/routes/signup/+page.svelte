@@ -1,7 +1,7 @@
 <script lang="ts">
 import ApiUtil from '../../lib/ApiUtil';
-import LibCookie from '../../lib/LibCookie';
-import LibConfig from '../../lib/LibConfig';
+//import LibCookie from '../../lib/LibCookie';
+//import LibConfig from '../../lib/LibConfig';
 
 const handleSubmit = async function(){
   console.log("#handleSubmit");
@@ -28,23 +28,6 @@ const handleSubmit = async function(){
   }catch (error) {
     console.error(error)
   }
-
-//return;
-
-/* 
-    const response = await fetch("/api/users/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password , email}),
-    });
-  console.log("response=", response.ok);
-    if (response.ok) {
-      console.log("Login successful!");
-      location.href = "/";
-    } else {
-      alert("Invalid User data.");
-    }
-*/
 } 
 </script>
   

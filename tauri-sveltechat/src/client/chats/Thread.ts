@@ -35,7 +35,6 @@ const Thread = {
      const item = {
       chatId: chatId,
      }      
-     //const json = await HttpCommon.server_post(item, "/threads/get_list_chat");
      const target: any = JSON.stringify(item);	
      const res = await fetch("/api/threads/get_list_chat", {
        method: 'POST',
@@ -100,22 +99,9 @@ const Thread = {
         id: id
       }
       console.log(item);
-      const target: any = JSON.stringify(item);	
-      const res = await fetch("/api/threads/delete", {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},      
-        body: target
-      });
-      const json = await res.json()
-      if (res.status !== 200) {
-        console.log(json);   
-        throw new Error(await res.text());
-      }
-      if (json.ret !==  LibConfig.OK_CODE) {
-        throw new Error("Error, json.ret <> OK");
-      }
-      console.log(json);
-      return ret;
+      const res = await ApiUtil.post('/api/threads/delete', item);
+      console.log(res);
+      return res.data;
     } catch (e) {
       console.error(e);
       throw new Error('Error, delete');

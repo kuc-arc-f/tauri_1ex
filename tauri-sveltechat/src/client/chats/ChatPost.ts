@@ -72,7 +72,7 @@ const ChatPost = {
     }
   },
   /**
-  * delete
+  *
   * @param
   *
   * @return ret: true(update)
@@ -83,30 +83,16 @@ const ChatPost = {
       const item = {
         id: id,
       }
-//console.log(item)      
-      //const json = await HttpCommon.server_post(item, '/chat_posts/delete');
-      const body: any = JSON.stringify(item);	
-      const res = await fetch("/api/chat_posts/delete", {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},      
-        body: body
-      });
-      const json = await res.json()
-      if (res.status !== 200) {
-        console.log(json);   
-        throw new Error(await res.text());
-      }
-      if (json.ret !==  LibConfig.OK_CODE) {
-        throw new Error("Error, json.ret <> OK");
-      }
-      console.log(json.ret);
+      const res = await ApiUtil.post("/api/chat_posts/delete" , item);
+      return res.data;
+console.log(res)      
     } catch (e) {
       console.log(e);
       throw new Error('error, delete');
     }
   },  
   /**
-  * getLastTime
+  *
   * @param chatId: number
   *
   * @return Promise
@@ -147,28 +133,6 @@ const ChatPost = {
       const postData = { key: 'example', value: 'data' };
       const res = await ApiUtil.post('/api/chat_posts/get', item);
       return res.data;
-      /*
-      const body: any = JSON.stringify(item);	
-      const res = await fetch("/api/chat_posts/get", {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},      
-        body: body
-      });
-      const json = await res.json()
-      if (res.status !== 200) {
-        console.log(json);   
-        throw new Error(await res.text());
-      }
-      if (json.ret !==  LibConfig.OK_CODE) {
-        throw new Error("Error, json.ret <> OK");
-      } 
-      console.log(json);      
-      if(json.ret === LibConfig.OK_CODE) {
-        ret = json.data;
-      }
-      */
-//console.log(json);
-      //return ret;       
     } catch (e) {
       console.log(e);
       throw new Error('error, get');
