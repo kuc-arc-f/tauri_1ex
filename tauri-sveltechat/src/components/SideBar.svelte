@@ -46,8 +46,8 @@
   {
     //console.log("#logOut.key=" , LibConfig.COOKIE_KEY_USER)
     if (window.confirm("LogOut OK ?")) {
-      LibCookie.deleteCookie(LibConfig.COOKIE_KEY_USER);
-      location.href = "/#/login";
+      LibCookie.deleteCookie(LibConfig.COOKIE_KEY_AUTH);
+      location.href = "/login";
     }
   
   }  
