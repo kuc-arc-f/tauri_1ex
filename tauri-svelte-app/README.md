@@ -1,4 +1,4 @@
-﻿# tauri-plan
+﻿# tauri-svelte-app
 
  Version: 0.9.1
 
@@ -21,6 +21,7 @@ Tauri + Svelte + d1 + workers , example
 
 ```
 VITE_API_URL=https://test
+VITE_API_KEY="123"
 ```
 
 ***
