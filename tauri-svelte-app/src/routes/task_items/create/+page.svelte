@@ -1,0 +1,129 @@
+<svelte:head>
+<title>Show</title>
+<meta name="description" content="About this app" />
+</svelte:head>
+
+<script lang="ts">
+let selected = 1;
+
+//import { marked } from 'marked';
+import { onMount } from 'svelte';
+import ModalComplete from '$lib/components/ModalComplete.svelte';
+//import LibConfig from '$lib/LibConfig';
+//import LibAuth from '$lib/LibAuth';
+import LibCommon from '$lib/LibCommon';
+import CrudCreate from "../CrudCreate";
+//import HttpCommon from '$lib/HttpCommon';
+//
+/** @type {import('./$types').PageData} */
+export let data: any, item: any= {}, post_id = 0, content = "", id = 0;
+let messageModal = "";
+let complete = "", start_date= "";
+//
+//console.log("[id=", data.id);
+//id = data.id;
+//console.log(data.item);
+
+//
+const startProc= async function() {
+  const dt = LibCommon.formatDate(new Date(), 'YYYY-MM-DD');
+  complete = dt;
+  start_date = dt;
+//console.log(complete);
+}
+onMount(async () => {
+  try {
+    const searchParams = new URLSearchParams(window.location.search);
+    const idValue = searchParams.get('id') || "";
+    console.log("create.onMount=", idValue);
+    id = Number(idValue);
+    startProc();
+
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+/**
+*
+* @param
+*
+* @return
+*/
+const save = async function() {
+  try{
+console.log("#save.selected=", selected); 
+    const resulte = await CrudCreate.addItem(Number(id), selected);
+console.log(resulte);
+    if(resulte) {
+//            alert("Success, save");
+      messageModal = "Success, Save";
+    }
+  } catch (e) {
+    console.error(e);
+  }    
+}
+//
+const okFunction = function () {
+    window.location.href = `/task_project/${data.id}`;
+}
+</script>
+
+<!-- CSS -->
+<style>
+</style>
+
+<!-- MarkUp -->
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+	<div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
+    <a class="btn-outline-blue" href={`/task_project?id=${id}`}
+    >Back</a>
+    <hr class="my-2" />
+    <h1 class="text-3xl -font-bold">TaskCreate</h1>
+    projectId: {0}
+    <hr class="my-2" />
+    <div class="col-md-9 form-group">
+      <label class="fw-bold ">Title:</label>
+      <input type="text" name="title" id="title" 
+      class="input_text" />
+    </div>
+    <hr class="my-2" />
+    <label>
+        <input bind:group={selected} type="radio" name="amount" value={1} 
+        class="form-check-input mx-2" />none
+    </label>
+    <label>
+        <input bind:group={selected} type="radio" name="amount" value={2} 
+        class="form-check-input mx-2" />working
+    </label>
+    <label>
+        <input bind:group={selected} type="radio" name="amount" value={3} 
+        class="form-check-input mx-2" />complete
+    </label>
+    <hr class="mt-2 mb-2" />
+    <div class="col-md-6 form-group">
+        <label class="col-sm-12">Start:</label>
+        <input type="date"  class="form-control"  id="start_date" name="start_date"                   
+        value={start_date} required="required" />        
+    </div>
+    <hr class="mt-2 mb-2" />
+    <div class="col-md-6 form-group">
+        <label class="col-sm-12">End:</label>
+        <input type="date"  class="form-control"  id="complete" name="complete"                   
+        value={complete} required="required" />        
+    </div>
+    <hr />
+    <div class="col-md-6 form-group">
+        <label for="content">Content:</label>
+        <textarea id="content" name="content" required 
+        class="input_textarea"
+        rows="10" placeholder=""></textarea>
+    </div> 
+    <button on:click={save} class="btn btn-primary my-2">Save</button>
+  </div>
+</div>
+
+<!--
+    <hr />
+    <ModalComplete bind:message={messageModal} okFunction={okFunction} />
+-->

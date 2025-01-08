@@ -1,0 +1,191 @@
+<svelte:head>
+<title>Show</title>
+<meta name="description" content="About this app" />
+</svelte:head>
+
+<script lang="ts">
+import { onMount } from 'svelte';
+import TaskIndex from "../task_items/CrudIndex";
+import IndexRow from "./IndexRow.svelte";
+//export let id;
+import { EditId, itemId } from './stores';
+import LibConfig from '$lib/LibConfig';
+//import LibAuth from '$lib/LibAuth';
+//import LibCommon from '$lib/LibCommon';
+import CrudShow from '../task_project/CrudShow';
+import CrudIndex from '../task_project/CrudIndex';
+import TaskCrud from '../task_items/Crud';
+import ModalShow from "./ModalShow.svelte";
+//
+/** @type {import('./$types').PageData} */
+export let data: any, item: any= {}, post_id = 0, content = "", id = 0;
+let items: any[] = [], itemsNone = [], itemsWorking = [], itemsComplete = [];
+let project = {};
+
+const setStateArray = async function() {
+    itemsNone = items.filter(item => (item.status === String(TaskCrud.statusType.none)) );
+//    console.log(itemsNone);
+    itemsWorking = items.filter(item => (item.status === String(TaskCrud.statusType.working)) );
+//    console.log(itemsWorking);
+    itemsComplete = items.filter(item => (item.status === String(TaskCrud.statusType.complete)) );
+//    console.log(itemsComplete);
+}
+const startProc= async function() {
+    itemId.update(n => 0);
+    const searchParams = new URLSearchParams(window.location.search);
+    const idValue = searchParams.get('id') || "";
+    console.log("onMount=", idValue);
+    id = Number(idValue);
+    const res = await TaskIndex.getList(id);
+    items = res.data;
+    //console.log(items);
+    setStateArray();
+    const target = await CrudIndex.get(id);
+    project = target.data;
+    //console.log(project);
+}
+
+/**
+*
+* @param
+*
+* @return
+*/
+onMount(async () => {
+  try {
+    startProc();
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+/**
+*
+* @param
+*
+* @return
+*/
+const clearSearch = async function() {
+    const seachKey = document.querySelector("#searchKey") as HTMLInputElement;
+    seachKey.value = "";
+    startProc();
+console.log(items);
+}
+
+/**
+*
+* @param
+*
+* @return
+*/
+const search = async function() {
+    console.log("search");
+    items = await CrudShow.search(Number(id));
+    setStateArray();
+console.log(items);
+}
+//
+const nextPage = function(path: string) {
+    location.href = path;
+}
+/**
+*
+* @param
+*
+* @return
+*/ 
+const parentShowFunction = function (id: number) {
+console.log("parentShowFunction=", id);
+  itemId.update(n => 0);
+  itemId.update(n => id);
+}
+</script>
+
+<!-- CSS -->
+<style>
+</style>
+
+<!-- MarkUp -->
+<div class="container mx-auto px-4 py-4">
+  <div class="row">
+    <div class="col-md-6">
+        <a href={`/task_project`} class="btn btn-outline-blue">Back
+        </a>
+    </div>
+    <div class="col-md-6 text-end">
+      <a class="btn btn-primary mx-4" href={`/task_items/create?id=${id}`}>Create</a>
+      <!--
+      <a class="btn btn-outline-primary" href={`/task_project/export?id=${id}`}>Export</a>
+      -->
+    </div>
+  </div>
+  <hr class="my-1" />
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="text-3xl font-bold">{project.name}</h3>
+        ID: {project.id}
+    </div>
+    <div class="col-md-6 text-end p-2">
+      <a class="btn btn-outline-blue mx-0" 
+      href="#" on:click={nextPage(`/task_project/gantt/${id}`)}>Gantt</a>
+      <a class="btn btn-outline-blue mx-0" 
+      href={`/task_project/export?id=${id}`} >Export</a>
+      <!--
+      <a class="btn btn-outline-primary mx-0" href={`/task_project/list/${id}`}>List</a>
+      -->
+    </div>
+  </div>    
+  <hr class="my-1" />
+  <div class="row">
+    <div class="text-end">
+      <button class="btn btn-sm btn-outline-blue" on:click={clearSearch}
+      >Clear</button>
+      <span class="search_key_wrap">
+        <input type="text" size="24" class="mx-2" name="searchKey" id="searchKey" 
+         placeholder="Title search">
+      </span>
+      <button class="btn btn-sm btn-outline-blue" on:click={search}>Search</button>      
+    </div>
+  </div>    
+  <hr class="my-1" />
+  <div class="row">
+    <div class="flex flex-row">
+      <div class="flex-1 text-center p-1 m-1">None
+      </div>
+      <div class="flex-1 text-center p-1 m-1">Working
+      </div>
+      <div class="flex-1 text-center p-1 m-1">Complete
+      </div>
+    </div>
+  </div> 
+  <!-- Task -->
+  <div class="row">	 
+    <div class="flex flex-row">
+      <div class="flex-1 text-center p-0 m-1">
+        {#each itemsNone as item}
+            <IndexRow id={item.id} title={item.title} status="1" date={item.complete} 
+            parentShowFunction={parentShowFunction} />
+        {/each}
+
+      </div>
+      <div class="flex-1 text-center p-0 m-1">
+        {#each itemsWorking as item}
+            <IndexRow id={item.id} title={item.title} status="2" date={item.complete} 
+            parentShowFunction={parentShowFunction} />
+        {/each}
+      </div>
+      <div class="flex-1 text-center p-0 m-1">
+        {#each itemsComplete as item}
+            <IndexRow id={item.id} title={item.title} status="3" date={item.complete}
+            parentShowFunction={parentShowFunction} />
+        {/each}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!--
+<ModalShow />   
+-->
+
