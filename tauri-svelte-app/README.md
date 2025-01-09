@@ -6,7 +6,7 @@
 
  date    : 2025/01/03
 
- update  :
+ update  :　2025/01/09
 
 ***
 ### Summary
@@ -28,6 +28,13 @@ VITE_API_KEY="123"
 ### API Server
 
 https://github.com/kuc-arc-f/d1-project8git
+
+***
+### Blog
+
+* https://zenn.dev/link/comments/4f605d76a6765f
+* https://zenn.dev/link/comments/0d51cc8acf7c6f
+
 
 ***
 # License
