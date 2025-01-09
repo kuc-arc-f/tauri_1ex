@@ -114,47 +114,48 @@ console.log("parentShowFunction=", id);
     </div>
     <div class="col-md-6 text-end">
       <a class="btn btn-primary mx-4" href={`/task_items/create?id=${id}`}>Create</a>
-      <!--
-      <a class="btn btn-outline-primary" href={`/task_project/export?id=${id}`}>Export</a>
-      -->
     </div>
   </div>
-  <hr class="my-1" />
-  <div class="row">
+  <div class="items-center justify-between mt-2 p-4 bg-white rounded-lg shadow">
     <div class="col-md-6">
       <h3 class="text-3xl font-bold">{project.name}</h3>
-        ID: {project.id}
+      ID: {project.id}
     </div>
-    <div class="col-md-6 text-end p-2">
-      <a class="btn btn-outline-blue mx-0" 
-      href="#" on:click={nextPage(`/task_project/gantt/${id}`)}>Gantt</a>
-      <a class="btn btn-outline-blue mx-0" 
-      href={`/task_project/export?id=${id}`} >Export</a>
-      <!--
-      <a class="btn btn-outline-primary mx-0" href={`/task_project/list/${id}`}>List</a>
-      -->
+    <div class="row">
+      <div class="col-md-6 text-end p-2">
+        <a class="btn btn-outline-blue mx-0" 
+        href="#" on:click={nextPage(`/task_project/gantt/${id}`)}>Gantt</a>
+        <a class="btn btn-outline-blue mx-0" 
+        href={`/task_project/export?id=${id}`} >Export</a>
+        <!--
+        <a class="btn btn-outline-primary mx-0" href={`/task_project/list/${id}`}>List</a>
+        -->
+      </div>
     </div>
-  </div>    
-  <hr class="my-1" />
-  <div class="row">
-    <div class="text-end">
-      <button class="btn btn-sm btn-outline-blue" on:click={clearSearch}
-      >Clear</button>
-      <span class="search_key_wrap">
-        <input type="text" size="24" class="mx-2" name="searchKey" id="searchKey" 
-         placeholder="Title search">
-      </span>
-      <button class="btn btn-sm btn-outline-blue" on:click={search}>Search</button>      
-    </div>
-  </div>    
-  <hr class="my-1" />
+    <hr class="my-1" />
+    <div class="row">
+      <div class="text-end">
+        <button class="btn btn-sm btn-outline-blue" on:click={clearSearch}
+        >Clear</button>
+        <span class="search_key_wrap">
+          <input type="text" size="24" class="mx-2" name="searchKey" id="searchKey" 
+           placeholder="Title search">
+        </span>
+        <button class="btn btn-sm btn-outline-blue" on:click={search}>Search</button>      
+      </div>
+    </div>    
+  </div>
+  
   <div class="row">
     <div class="flex flex-row">
-      <div class="flex-1 text-center p-1 m-1">None
+      <div class="flex-1 text-center p-1 m-1">
+        <h3 class="text-2xl">None</h3>
       </div>
-      <div class="flex-1 text-center p-1 m-1">Working
+      <div class="flex-1 text-center p-1 m-1">
+        <h3 class="text-2xl">Working</h3>
       </div>
-      <div class="flex-1 text-center p-1 m-1">Complete
+      <div class="flex-1 text-center p-1 m-1">
+        <h3 class="text-2xl">Complete</h3>
       </div>
     </div>
   </div> 

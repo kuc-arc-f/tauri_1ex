@@ -5,17 +5,18 @@
 
 <script lang="ts">
 import { onMount } from 'svelte';
-//import { marked } from 'marked';
 import LibConfig from '$lib/LibConfig';
 import LibAuth from '$lib/LibAuth';
 import LibCommon from '$lib/LibCommon';
-import HttpCommon from '$lib/HttpCommon';
+//import HttpCommon from '$lib/HttpCommon';
+import ApiUtil from '$lib/ApiUtil';
 import CrudEdit from "../CrudEdit";
+import CrudIndex from '../../task_project/CrudIndex';
 import ModalComplete from '$lib/components/ModalComplete.svelte';
 
 /** @type {import('./$types').PageData} */
 export let data: any, item: any= {}, post_id = 0, content = "", id = 0;
-let task: any = {};
+let task: any = {}, project = {};
 let selected = 1;
 let messageModal = ""
 //id = data.id;
@@ -31,20 +32,20 @@ let messageModal = ""
 */
 const startProc= async function() {
   const searchParams = new URLSearchParams(window.location.search);
-    const idValue = searchParams.get('id') || "";
-    console.log("onMount=", idValue);
-    id = Number(idValue);
-    const res = await CrudEdit.get(Number(id));
-    console.log(res.data);
-    task = res.data;
-    console.log(task);
-    console.log("projectId=", task.projectId);
-    selected = Number(task.status);
-    task.complete = LibCommon.converDateString(task.complete);
-    task.start_date = LibCommon.converDateString(task.start_date);
-    //
-    //const json = await HttpCommon.server_post(postItem, "/project/get");
-    //console.log(json);
+  const idValue = searchParams.get('id') || "";
+  console.log("onMount=", idValue);
+  id = Number(idValue);
+  const res = await CrudEdit.get(Number(id));
+  console.log(res.data);
+  task = res.data;
+  console.log(task);
+  console.log("projectId=", task.projectId);
+  selected = Number(task.status);
+  task.complete = LibCommon.converDateString(task.complete);
+  task.start_date = LibCommon.converDateString(task.start_date);
+  //const target = await CrudIndex.get(task.projectId);
+  //project = target.data;
+  //console.log(project);
 }
 
 onMount(async () => {
@@ -64,15 +65,15 @@ onMount(async () => {
 const save = async function() {
   try{
 console.log("#save.selected=", selected); 
-      const resulte = await CrudEdit.update(Number(id), selected);
+    const resulte = await CrudEdit.update(Number(id), selected);
 console.log(resulte);
-      if(resulte) {
-          messageModal = "Success, Save";
-//            location.href = `/task_project/${data.item.projectId}`;
-      }
+    if(resulte) {
+      messageModal = "Success, Save";
+      location.href = `/task_project_show?id=${task.projectId}`;
+    }
   } catch (e) {
-      console.error(e);
-      throw new Error('Error , save');
+    console.error(e);
+    throw new Error('Error , save');
   }    
 }
 
@@ -84,19 +85,23 @@ console.log(resulte);
  */ 
  async function deleteItem(){
 	try {
+    if (!window.confirm("Delete OK?")) {
+      return;
+    }
+
 		const item = {
-			id: Number(data.id),
+			id: Number(id),
 		}
-//console.log(item);
-    const json = await HttpCommon.server_post(item, '/tasks/delete');
-console.log(json);
-        if(json.ret !== LibConfig.OK_CODE) {
-            throw new Error("Error, delete");
-        } else {
-//            alert("Success, delete");
-            messageModal = "Success, delete";
-//            location.href = `/task_project/${data.item.projectId}`;
-        }
+console.log(item);
+    const res = await ApiUtil.post('/tasks/delete', item );
+    console.log("ret=", res.ret)
+    console.log(res)
+    if(!res.ret){
+      throw new Error("Error, delete");
+    }else{
+      location.href = `/task_project_show?id=${task.projectId}`;
+    }
+    return res.data;
 	} catch (error) {
 	    console.error(error);
 	}
@@ -116,8 +121,8 @@ const okFunction = function () {
 	<div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
     <a class="btn btn-outline-blue" href={`/task_project_show?id=${task.projectId}`}
     >Back</a>
-    <h1>{""}</h1>
-    ID: {task.projectId}
+    <h1 class="text-3xl">{task.title}</h1>
+    ID: {id}
     <hr />
     <div class="col-md-9 form-group">
       <label class="fw-bold ">Title:</label>
@@ -156,14 +161,15 @@ const okFunction = function () {
         class="input_textarea"
         rows="10" placeholder="">{task.content}</textarea>
     </div>
-    <hr class="my-1" />  
     <button on:click={save} class="btn btn-primary my-2">Save</button>  
     <hr class="my-1" />
-    <button on:click={deleteItem} class="btn btn-danger my-2">Delete</button>    
+    <button on:click={deleteItem} 
+    class="btn btn-outline-red my-2">Delete</button>    
 
   </div>
 </div>   
 
 <!--
-    <ModalComplete bind:message={messageModal} okFunction={okFunction} />
+<hr class="my-1" />  
+<ModalComplete bind:message={messageModal} okFunction={okFunction} />
 -->

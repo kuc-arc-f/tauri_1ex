@@ -23,8 +23,8 @@ console.log("showModal= ", id)
 </script>
 
 <!-- MarkUp -->
-<div class="bg-white my-4">
-    <div class="row justify-content-center p-1 task_index_row">
+<div class="bg-white mb-2">
+    <div class="row justify-content-center p-0 task_index_row">
       <div class={`task_card_box card shadow-lg mb-0 ${bg_status_color}`}>
         <div class="card-body p-2">
           <div class="d-flex flex-column flex-md-row">

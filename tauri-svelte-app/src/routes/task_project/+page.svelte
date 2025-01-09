@@ -8,7 +8,6 @@
 //import { goto } from '$app/navigation';
 //import LibAuth from '$lib/LibAuth';
 import ApiUtil from '$lib/ApiUtil';
-//import HttpCommon from '$lib/HttpCommon';
 import CrudIndex from './CrudIndex';
 
 /** @type {import('./$types').PageData} */
@@ -60,12 +59,13 @@ const search = async function() {
 }
 </script>
 
-<div class="pt-2">
-  <a href={`/`} class="btn-outline-blue mx-2">home
-  </a>
-</div>
-
-<div class="container mx-auto px-4 py-4">
+<div class="task_project">
+  <div class="pt-2">
+    <a href={`/`} class="btn-outline-blue mx-2">home
+    </a>
+  </div>
+  <!-- main -->
+  <div class="container mx-auto px-4 py-4">
     <div class="items-center justify-between p-4 bg-white rounded-lg shadow">
         <div class="col-md-6">
             <h1 class="text-3xl font-bold">project</h1></div>
@@ -85,7 +85,7 @@ const search = async function() {
         </div>
     </div>
     {#each data.items as item}
-    <div class="flex items-center justify-between py-4 px-4 my-8 bg-white rounded-lg shadow">
+    <div class="flex items-center justify-between py-4 px-4 my-4 bg-white rounded-lg shadow">
       <div class="flex-1">
         <a href={`/task_project_show?id=${item.id}`}>
           <h3 class="my-1">{item.name}</h3>
@@ -108,6 +108,9 @@ const search = async function() {
       <hr class="my-2" />
     </div>
     {/each}	
+  </div>
+
 </div>
+
 <!-- 
 -->

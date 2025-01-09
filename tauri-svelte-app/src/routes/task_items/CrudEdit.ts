@@ -65,14 +65,6 @@ const CrudEdit = {
       const res = await ApiUtil.post('/tasks/update', values );
       console.log(res)
       return res.data;
-/*
-      const json = await HttpCommon.server_post(values, '/tasks/update');
-      console.log(json);
-      if (json.ret ===  LibConfig.OK_CODE) {
-      ret = true;
-      } 
-      return ret;
-*/
     } catch (e) {
       console.error(e);
       throw new Error('Error , update');
