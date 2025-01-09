@@ -11,7 +11,7 @@
 ***
 ### Summary
 
-Tauri + React Svelte , d1 + workers
+Tauri + React Svelte Vue , d1 + workers
 
 
 ***
