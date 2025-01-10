@@ -11,7 +11,6 @@ import CrudIndex from "./CrudIndex";
 import Plan from "./Plan";
 import moment from 'moment'
 //import LibAuth from '$lib/LibAuth';
-//import HttpCommon from '$lib/HttpCommon';
 import IndexRow from './IndexRow.svelte';
 import ModalShow from "./ModalShow.svelte";
 import ModalEdit from "./ModalEdit.svelte";
@@ -119,34 +118,37 @@ console.log("parentShowFunction=", id);
 </script>
 
 <!-- MarkUp -->
-<a href="/"> [home] </a>
-<div class="container mx-auto px-4 py-8">
-  <div class = "row mt-2">
-      <div class="col-md-6">
+<a class="mx-4 my-2" href="/"> [home] </a>
+<div class="container mx-auto pt-0 pb-8">
+  <div class = "mt-2 bg-white px-4 py-2 rounded-lg">
+    <div class="flex flex-row">
+      <div class="flex-1 p-1">
         <h1 class="text-3xl font-bold">Plan: {month_str}</h1>
       </div>
-      <div class="col-md-6 text-end">
-          <button on:click={changeBefore} class="btn btn-outline-primary">
+      <div class="flex-1 p-1 text-end">
+        <button on:click={changeBefore} class="btn btn-outline-blue">
           <i class="fas fa-arrow-circle-left"></i> Before
-          </button>
-          <button on:click={changeAfter} class="btn btn-outline-primary ml-2">
-              Next <i class="fas fa-arrow-circle-right"></i>
-          </button>            
+        </button>
+        <button on:click={changeAfter} class="btn btn-outline-blue ml-2">
+            Next <i class="fas fa-arrow-circle-right"></i>
+        </button>            
       </div>
-  </div>
-	<hr class="my-1" />
-  <div class="row mt-2">
-    <div class="col-md-6">
-        <a href={`/plan/create`} class="btn btn-primary">Create
-        </a>
     </div>
-    <div class="col-md-6 text-end">
-        <button class="btn btn-outline-primary" on:click={exportExcel}>Export</button>
+    <hr class="my-1" />
+    <div class="flex flex-row">
+      <div class="flex-1 p-1 m-0">
+        <a href={`/plan/create`} class="">
+          <button class="btn-blue">Create</button>
+        </a>
+      </div>
+      <div class="flex-1 text-end p-1 m-0">
+        <button class="btn btn-outline-blue" on:click={exportExcel}>Export</button>
+      </div>
     </div>
   </div>
   <!-- -->
-  <div class="table_box_wrap mb-4">
-      <table class="mt-2 w-full table-auto border">
+  <div class="table_box_wrap mt-4 mb-4 p-2 bg-white rounded-lg">
+      <table class="mt-2 w-full table-auto border ">
         <thead class="border">
           <tr>
             <th class="th_sun text-danger text-red-400">Sun</th>

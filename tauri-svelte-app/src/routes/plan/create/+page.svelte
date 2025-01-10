@@ -33,6 +33,7 @@ const startProc = async function () {
 	}	
 }
 onMount(async () => {
+	startProc();
 });
 
 /**
