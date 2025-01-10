@@ -78,7 +78,9 @@ const search = async function() {
             <button class="btn btn-sm btn-outline-blue" on:click={clearSearch}
             >Clear</button>
             <span class="search_key_wrap">
-            <input type="text" size="24" class="input_text mx-2" name="searchKey" id="searchKey" 
+            <input type="text" size="24" 
+            class="border border-gray-400 rounded-md px-3 py-2 w-[50%] focus:outline-none focus:border-blue-500" 
+            name="searchKey" id="searchKey" 
             placeholder="Title search">
             </span>
             <button class="btn btn-sm btn-outline-blue" on:click={search}>Search</button>      

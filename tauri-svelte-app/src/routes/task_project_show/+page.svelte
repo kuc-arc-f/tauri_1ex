@@ -79,9 +79,10 @@ console.log(items);
 */
 const search = async function() {
     console.log("search");
-    items = await CrudShow.search(Number(id));
+    const res = await CrudShow.search(Number(id));
+//console.log(res);
+    items = res.data;
     setStateArray();
-console.log(items);
 }
 //
 const nextPage = function(path: string) {
@@ -123,7 +124,7 @@ console.log("parentShowFunction=", id);
     <div class="row">
       <div class="col-md-6 text-end p-2">
         <a class="btn btn-outline-blue mx-0" 
-        href="#" on:click={nextPage(`/task_project/gantt/${id}`)}>Gantt</a>
+        href="#" on:click={nextPage(`/task_project_gantt?id=${id}`)}>Gantt</a>
         <a class="btn btn-outline-blue mx-0" 
         href={`/task_project/export?id=${id}`} >Export</a>
         <!--
@@ -137,7 +138,9 @@ console.log("parentShowFunction=", id);
         <button class="btn btn-sm btn-outline-blue" on:click={clearSearch}
         >Clear</button>
         <span class="search_key_wrap">
-          <input type="text" size="24" class="mx-2" name="searchKey" id="searchKey" 
+          <input type="text" size="24" 
+          class="border border-gray-400 rounded-md px-3 py-2 w-[50%] focus:outline-none focus:border-blue-500" 
+          name="searchKey" id="searchKey" 
            placeholder="Title search">
         </span>
         <button class="btn btn-sm btn-outline-blue" on:click={search}>Search</button>      

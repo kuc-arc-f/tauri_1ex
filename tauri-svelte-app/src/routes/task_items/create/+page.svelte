@@ -4,19 +4,22 @@
 </svelte:head>
 
 <script lang="ts">
-let selected = 1;
 
+let selected = 1;
+import { z } from "zod";
 import { onMount } from 'svelte';
 import ModalComplete from '$lib/components/ModalComplete.svelte';
 //import LibConfig from '$lib/LibConfig';
 import LibCommon from '$lib/LibCommon';
 import CrudCreate from "../CrudCreate";
+import Crud from '../Crud';
+import { todoSchema } from './types';
 //
 /** @type {import('./$types').PageData} */
 export let data: any, item: any= {}, post_id = 0, content = "", id = 0;
 let messageModal = "";
 let complete = "", start_date= "";
-
+let errors: { [key: string]: string } = {};
 //
 const startProc= async function() {
   const dt = LibCommon.formatDate(new Date(), 'YYYY-MM-DD');
@@ -46,6 +49,10 @@ onMount(async () => {
 */
 const save = async function() {
   try{
+    errors = {};
+    let values = Crud.getInputValues();
+console.log(values); 
+    const validatedTodo = todoSchema.parse(values);
 console.log("#save.selected=", selected); 
     const resulte = await CrudCreate.addItem(Number(id), selected);
 console.log(resulte);
@@ -53,8 +60,16 @@ console.log(resulte);
       location.href = `/task_project_show?id=${id}`;
       messageModal = "Success, Save";
     }
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
+    if (error instanceof z.ZodError) {
+			errors = error.errors.reduce((acc, curr) => {
+				const field = curr.path[0];
+				acc[field] = curr.message;
+				return acc;
+			}, {});
+		}
+    console.log(errors);
   }    
 }
 //
@@ -80,6 +95,9 @@ const okFunction = function () {
       <label class="fw-bold ">Title:</label>
       <input type="text" name="title" id="title" 
       class="input_text" />
+      {#if errors.title}
+			<p class="text-red-500 text-sm mt-1">{errors.title}</p>
+			{/if}
     </div>
     <hr class="my-2" />
     <label>

@@ -1,14 +1,9 @@
 //import LibCrud from '../../lib/LibCrud';
 import LibConfig from '$lib/LibConfig';
 import HttpCommon from '$lib/HttpCommon';
+import ApiUtil from '../../lib/ApiUtil';
 //
 const CrudShow = {
-  /**
-  *
-  * @param
-  *
-  * @return
-  */
   /**
   *
   * @param
@@ -24,19 +19,16 @@ const CrudShow = {
         seachKey: seachKey,
       }
 //console.log(postItem); 
-      const json = await HttpCommon.server_post(postItem, "/tasks/search");
-console.log(json);      
-      let items: any[] = [];
-      items = json.data;
-//console.log(items);
-      return items;
+      const res = await ApiUtil.post('/tasks/search', postItem);
+      console.log(res.data)
+      return res.data;
     } catch (e) {
       console.error(e);
       throw new Error("Error, search");
     } 
   },  
   /**
-  * startProc
+  *
   * @param
   *
   * @return
