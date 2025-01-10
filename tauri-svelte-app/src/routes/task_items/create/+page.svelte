@@ -6,23 +6,16 @@
 <script lang="ts">
 let selected = 1;
 
-//import { marked } from 'marked';
 import { onMount } from 'svelte';
 import ModalComplete from '$lib/components/ModalComplete.svelte';
 //import LibConfig from '$lib/LibConfig';
-//import LibAuth from '$lib/LibAuth';
 import LibCommon from '$lib/LibCommon';
 import CrudCreate from "../CrudCreate";
-//import HttpCommon from '$lib/HttpCommon';
 //
 /** @type {import('./$types').PageData} */
 export let data: any, item: any= {}, post_id = 0, content = "", id = 0;
 let messageModal = "";
 let complete = "", start_date= "";
-//
-//console.log("[id=", data.id);
-//id = data.id;
-//console.log(data.item);
 
 //
 const startProc= async function() {
@@ -33,6 +26,7 @@ const startProc= async function() {
 }
 onMount(async () => {
   try {
+    //console.log("#task_items.start");
     const searchParams = new URLSearchParams(window.location.search);
     const idValue = searchParams.get('id') || "";
     console.log("create.onMount=", idValue);
@@ -55,8 +49,8 @@ const save = async function() {
 console.log("#save.selected=", selected); 
     const resulte = await CrudCreate.addItem(Number(id), selected);
 console.log(resulte);
-    if(resulte) {
-//            alert("Success, save");
+    if(resulte.ret === 200) {
+      location.href = `/task_project_show?id=${id}`;
       messageModal = "Success, Save";
     }
   } catch (e) {
@@ -76,11 +70,11 @@ const okFunction = function () {
 <!-- MarkUp -->
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
 	<div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
-    <a class="btn-outline-blue" href={`/task_project?id=${id}`}
+    <a class="btn-outline-blue" href={`/task_project_show?id=${id}`}
     >Back</a>
     <hr class="my-2" />
     <h1 class="text-3xl -font-bold">TaskCreate</h1>
-    projectId: {0}
+    projectId: {id}
     <hr class="my-2" />
     <div class="col-md-9 form-group">
       <label class="fw-bold ">Title:</label>

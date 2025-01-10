@@ -22,7 +22,8 @@ const CrudCreate = {
       values.userId = LibAuth.getUserId();
 console.log(values);
       const res = await ApiUtil.post('/tasks/create', values);
-      console.log(res.data)
+      console.log(res.data);
+      return res;
     } catch (e) {
       console.error("Error, addItem");
       console.error(e);

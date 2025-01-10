@@ -54,8 +54,7 @@ onMount(async () => {
 </style>
 
 <!-- MarkUp -->
-<div class="container mx-auto px-4 py-4">
-  <div class="container mx-auto px-4 py-4">
+<div class="container mx-auto px-4 py-4 bg-white">
     <div class="row">
       <div class="col-md-6">
         <a href={`/task_project`} 
@@ -79,10 +78,8 @@ onMount(async () => {
       </div>
   
     </div>
-    <hr class="my-1" />
+    <hr class="my-1 mb-32" />
     
-
-  </div>
 </div>
 
 <!--

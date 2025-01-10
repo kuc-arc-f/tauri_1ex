@@ -10,7 +10,6 @@ import IndexRow from "./IndexRow.svelte";
 //export let id;
 import { EditId, itemId } from './stores';
 import LibConfig from '$lib/LibConfig';
-//import LibAuth from '$lib/LibAuth';
 //import LibCommon from '$lib/LibCommon';
 import CrudShow from '../task_project/CrudShow';
 import CrudIndex from '../task_project/CrudIndex';

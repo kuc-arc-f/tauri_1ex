@@ -8,7 +8,6 @@ import { onMount } from 'svelte';
 import LibConfig from '$lib/LibConfig';
 import LibAuth from '$lib/LibAuth';
 import LibCommon from '$lib/LibCommon';
-//import HttpCommon from '$lib/HttpCommon';
 import ApiUtil from '$lib/ApiUtil';
 import CrudEdit from "../CrudEdit";
 import CrudIndex from '../../task_project/CrudIndex';
@@ -19,10 +18,6 @@ export let data: any, item: any= {}, post_id = 0, content = "", id = 0;
 let task: any = {}, project = {};
 let selected = 1;
 let messageModal = ""
-//id = data.id;
-
-//console.log("[id=", data.id);
-//console.log(data.item);
 
 /**
 *
@@ -150,7 +145,7 @@ const okFunction = function () {
     </div>    
     <hr class="mt-2 mb-2" />
     <div class="col-md-6 form-group">
-        <label class="col-sm-12">Scheduled Complete:</label>
+        <label class="col-sm-12">End:</label>
         <input type="date"  class="form-control"  id="complete" name="complete"                   
         value={task.complete} required="required" />        
     </div>
