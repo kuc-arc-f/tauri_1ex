@@ -4,16 +4,18 @@
 </svelte:head>
 
 <script lang="ts">
+import { z } from "zod";
 import { EditId } from './stores';
 import ApiUtil from '../../lib/ApiUtil';
+import { todoSchema } from './create/types'
+
 //import LibConfig from '$lib/LibConfig';
 //import LibAuth from '$lib/LibAuth';
 import LibCommon from '$lib/LibCommon';
-//import ModalComplete from '$lib/components/ModalComplete.svelte';
 //import CrudEdit from './CrudEdit';
 //
 let id = 0, item: any ={}, createdAt = "", content="", messageModal = "";
-let p_date = "";
+let p_date = "", errors = {};
 let IsOpen = false;
 
 /**
@@ -35,8 +37,8 @@ const getItem = async function (id: number) {
         //console.log(createdAt);
         p_date = LibCommon.converDateString(item.p_date);
         IsOpen = true;
-    } catch (e) {
-        console.error(e);
+    } catch (error) {
+        console.error(error);
     }    
 }
 //store
@@ -53,11 +55,13 @@ console.log("Modal.editModal.id=", value);
  */ 
 const savePost = async function () {
 	try {
+    errors = {};
 		const content = document.querySelector<HTMLInputElement>('#content');
 		const item = {
 			content : content?.value,
 			id: Number(id),
 		}
+    const validatedTodo = todoSchema.parse(item);
     //console.log(item);
     const res = await ApiUtil.post('/plan/update', item );
     console.log(res)
@@ -70,6 +74,14 @@ const savePost = async function () {
     }
 	} catch (error) {
 		console.error(error);
+		if (error instanceof z.ZodError) {
+			errors = error.errors.reduce((acc, curr) => {
+				const field = curr.path[0];
+				acc[field] = curr.message;
+				return acc;
+			}, {});
+		}
+		console.error(errors);
 	} 
 }
 //
@@ -126,7 +138,10 @@ function closeButton(){
         <label for="content">content</label>
         <textarea id="content" name="content" required class="input_textarea"
         rows="10" placeholder="markdown input, please">{item.content}</textarea>
-      </div>       
+        {#if errors.content}
+        <p class="text-red-500 text-sm mt-1">{errors.content}</p>
+        {/if}
+      </div>
       <button on:click={savePost} class="btn btn-primary my-1">Save</button>
       <hr class="my-1" />  
       <button on:click={deleteItem} class="btn-outline-red my-2">Delete</button>       

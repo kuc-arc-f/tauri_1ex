@@ -4,6 +4,7 @@
 </svelte:head>
 
 <script lang="ts">
+import { z } from "zod";
 import { onMount } from 'svelte';
 import LibConfig from '$lib/LibConfig';
 import LibAuth from '$lib/LibAuth';
@@ -12,13 +13,15 @@ import HttpCommon from '$lib/HttpCommon';
 import LibCommon from '$lib/LibCommon';
 import ModalComplete from '$lib/components/ModalComplete.svelte';
 import ApiUtil from '$lib/ApiUtil';
+import { todoSchema } from './types'
 /** @type {import('./$types').PageData} */
 export let data;
 let messageModal = "";
-console.log(data);
+let errors: { [key: string]: string } = {};
+//console.log(data);
 
 /**
- * start proc
+ *
  * @param
  *
  * @return
@@ -44,18 +47,27 @@ onMount(async () => {
  */ 
 const addPost = async function () {
 	try{
-//console.log("PUBLIC_API_URL=", PUBLIC_API_URL);
+		errors = {};
 		let values = Crud.getInputValues();
 		values.userId = 1;
-console.log(values);
-const res = await ApiUtil.post('/plan/create', values );
+		//console.log(values);
+		const validatedTodo = todoSchema.parse(values);
+
+		const res = await ApiUtil.post('/plan/create', values );
 		console.log(res)
-		//return res.data;
 		window.location.href = '/plan';
-	} catch (e) {
-      console.error(e);
-      alert("error, add");
-    }
+	} catch (error) {
+		console.log(error);
+		if (error instanceof z.ZodError) {
+			errors = error.errors.reduce((acc, curr) => {
+				const field = curr.path[0];
+				acc[field] = curr.message;
+				return acc;
+			}, {});
+		}
+		console.error(errors);
+		alert("error, add");
+  }
 }
 //
 const okFunction = function () {
@@ -85,6 +97,9 @@ const okFunction = function () {
 			<textarea id="content" name="content" required 
 			class="input_textarea"
 			rows="10" placeholder="markdown input, please"></textarea>
+			{#if errors.content}
+			<p class="text-red-500 text-sm mt-1">{errors.content}</p>
+			{/if}
 		</div>
 		<hr class="mt-2 mb-2" />
 		<button on:click={addPost} class="btn btn-primary my-2"
