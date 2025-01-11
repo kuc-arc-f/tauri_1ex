@@ -6,13 +6,16 @@
 
  date    : 2025/01/03
 
- update  : 2025/01/09 
+ update  : 2025/01/10 
 
 ***
 ### Summary
 
 Tauri + React Svelte Vue , d1 + workers
 
+***
+### Related
+* https://v2.tauri.app/
 
 ***
 # License
