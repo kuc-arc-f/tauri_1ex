@@ -1,5 +1,6 @@
 //import "./App.css";
 import "./index.css";
+//import { invoke } from '@tauri-apps/api/core';
 import { useState, useEffect } from 'react';
 //import axios from 'axios';
 import { z } from 'zod';
@@ -122,10 +123,18 @@ function App() {
     setErrors({});
   };
 
+  const testProc = async function(){
+    console.log("#testProc");
+    const ret = await ApiUtil.get("/");
+    console.log(ret);
+  }
+
   return (
   <>
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">hello</h1>
+      <hr className="my-2" />
+      {/* <button onClick={()=>testProc()}>[ test ]</button> */}
 
       {/* 検索バー */}
       <div className="mb-4">

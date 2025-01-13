@@ -3,21 +3,61 @@
 
 use tauri::command;
 use serde::{Deserialize, Serialize};
-use reqwest::Client;
 use reqwest::Error;
 use serde_json::json;
 use serde_json::Value;
 
-#[derive(Deserialize)]
-struct PostData {
-  key: String,
-  value: String,
+#[command]
+fn greet(name: &str) -> String {
+    format!("Hello, {}!", name)
 }
 
-#[derive(Serialize)]
-struct ApiResponse {
-    success: bool,
-    message: String,
+#[command]
+async fn get_external_api(url: String) -> String {
+  println!("url={}", url );
+  let client = reqwest::Client::new();
+
+  // GETリクエストを送信
+  let response = client.get(url).send().await;
+  //println!("response: {:?}", response);
+  // HTTPステータスコードを取得
+  match response {
+    Ok(resp) => {
+      let status = resp.status();
+      println!("HTTP Status: {}", status.to_string());
+      if status.is_success() {
+        println!("Request was successful!");
+        let body = resp.text().await.unwrap();
+        println!("Response.body: {}", body);
+        let payload = json!({
+          "status": 200,
+          "body": &body.to_string()
+        });
+        //println!("payload: {}", payload);
+        return payload.to_string();
+      } else if status.is_client_error() {
+        println!("Client error occurred!");
+        let body = resp.text().await.unwrap();
+        let payload = json!({
+          "status": 400,
+          "body": &body.to_string()
+        });
+        return payload.to_string();
+      } else if status.is_server_error() {
+        println!("Server error occurred!");
+        let body = resp.text().await.unwrap();
+        let payload = json!({
+          "status": 500,
+          "body": &body.to_string()
+        });
+        return payload.to_string();
+      }
+    }
+    Err(err) => {
+        eprintln!("Request failed: {}", err);
+    }
+  }
+  return "".to_string();
 }
 
 #[command]
@@ -35,7 +75,7 @@ async fn post_external_api(url: String, data: String) -> String {
       .await;
   // ステータスコードを取得
   //println!("Response: {}", body);
-  println!("response: {:?}", response);
+  //println!("response: {:?}", response);
   match response {
     Ok(resp) => {
         let status = resp.status();
@@ -44,7 +84,7 @@ async fn post_external_api(url: String, data: String) -> String {
         if status.is_success() {
             println!("Request was successful!");
             let body = resp.text().await.unwrap();
-            println!("Response.body: {}", body);
+            //println!("Response.body: {}", body);
             let payload = json!({
               "status": 200,
               "body": &body.to_string()
@@ -73,14 +113,12 @@ async fn post_external_api(url: String, data: String) -> String {
         eprintln!("Request failed: {}", err);
     }
   }
-
-  //let body = response.expect("REASON").text().await.unwrap();
   return "".to_string();
 }
 
 fn main() {
   tauri::Builder::default()
-  .invoke_handler(tauri::generate_handler![post_external_api])
+  .invoke_handler(tauri::generate_handler![post_external_api , get_external_api , greet])
   .run(tauri::generate_context!())
   .expect("error while running tauri application");
   tauri_app_lib::run();
