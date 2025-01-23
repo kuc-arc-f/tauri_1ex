@@ -18,6 +18,17 @@ Tauri + React Svelte Vue , d1 + workers
 * https://v2.tauri.app/
 
 ***
+* dev-start
+````
+npm run tauri dev
+````
+
+* build
+```
+npm run tauri build
+```
+
+***
 # License
 
 * MIT
