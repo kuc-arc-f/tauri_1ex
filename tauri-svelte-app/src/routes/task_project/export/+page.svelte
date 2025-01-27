@@ -10,10 +10,10 @@ import TaskIndex from "../../task_items/CrudIndex";
 import LibConfig from '$lib/LibConfig';
 import LibAuth from '$lib/LibAuth';
 import LibCommon from '$lib/LibCommon';
-//import HttpCommon from '$lib/HttpCommon';
 import ApiUtil from '$lib/ApiUtil';
 import CrudShow from '../CrudShow';
 import Export from '../Export';
+import ExportGantt from './ExportGantt';
 //
 /** @type {import('./$types').PageData} */
 export let data: any, item: any= {}, post_id = 0, content = "", id = 0;
@@ -38,7 +38,6 @@ const startProc= async function() {
     let postItem: any = {
       "id": id
     }; 
-    //const json = await HttpCommon.server_post(postItem, "/project/get");
     const res = await ApiUtil.post('/project/get', postItem );
     project = res.data.data;
     console.log(project)
@@ -82,6 +81,16 @@ const exportExcel = async function () {
       throw new Error('Error , exportExcel');
   }
 }
+
+const exportGantt = async function () {
+    try{
+//console.log(data);
+      await ExportGantt.out(items);
+  } catch (e) {
+      console.error(e);
+      throw new Error('Error , exportExcel');
+  }
+}
 </script>
 
 <!-- CSS -->
@@ -103,7 +112,12 @@ const exportExcel = async function () {
     ID: {id}
     <hr class="my-1" />
     <div class="text-center">
-        <button class="btn btn-primary" on:click={exportExcel}>Export</button>
+        <button class="my-2 btn btn-primary" on:click={exportExcel}>List</button>
+    </div>    
+    <hr class="my-1" />
+    <div class="text-center">
+        <button class="my-2 btn btn-primary" on:click={exportGantt}
+        >Gantt</button>
     </div>    
     <hr class="my-1" />
 
