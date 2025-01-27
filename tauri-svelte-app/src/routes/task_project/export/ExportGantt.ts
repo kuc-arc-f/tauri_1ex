@@ -5,6 +5,14 @@ import moment from 'moment';
 const ExportGantt = {
   
   out: async function (taskItems: any){
+    const res = await axios.get("/Gantt_temp.xlsx", { responseType: "arraybuffer" });
+    const data = new Uint8Array(res.data);
+    //@ts-ignore
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load(data);
+    const worksheet = workbook.getWorksheet('sheet1');
+    worksheet.pageSetup = {orientation:'portrait'};
+
     let tasks = [];
     console.log(taskItems);
     const targetItems = [];
@@ -18,32 +26,15 @@ const ExportGantt = {
         console.log(item)
         targetItems.push(item);
       });
-      tasks = targetItems;
+      tasks = targetItems.reverse();
     };
     convertItem(taskItems)
     console.log(tasks);
-//return;
-/*
-    const tasks = [
-      { id: 1, title: "企画", start: "2024-01-05", end: "2024-01-12" },
-      { id: 2, title: "技術スタック選定", start: "2024-01-05", end: "2024-01-12" },
-      { id: 3, title: "設計", start: "2024-01-12", end: "2024-01-19" },
-      { id: 4, title: "製造", start: "2024-01-12", end: "2024-01-26" },
-      { id: 5, title: "単体テスト PH-1", start: "2024-01-19", end: "2024-01-26" },
-      { id: 6, title: "単体テスト PH-2", start: "2024-01-19", end: "2024-02-02" },
-      { id: 7, title: "結合テスト PH-1", start: "2024-01-26", end: "2024-02-09" },
-      { id: 8, title: "結合テスト PH-2", start: "2024-02-02", end: "2024-02-16" },
-    ];
-*/    
 
     // 期間の計算 (表示する最初の日付と最後の日付を決定)
     const minDate = moment.min(tasks.map(task => moment(task.start)));
     const maxDate = moment.max(tasks.map(task => moment(task.end)));
     const diffDays = maxDate.diff(minDate, 'days');
-
-    // Excel ワークブックの作成
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Gantt Chart');
 
     // スタイルの設定
     const titleStyle = {
@@ -67,9 +58,8 @@ const ExportGantt = {
         right: { style: 'thin' }
       }
     };
-
     const ganttStyle = {
-      fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '66FFC0CB' } }, // Light pink
+      fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF87CEFA' } }, // COLOR
       border: {
         top: { style: 'thin' },
         left: { style: 'thin' },
@@ -87,7 +77,7 @@ const ExportGantt = {
     for (let i = 0; i <= diffDays; i++) {
       worksheet.getColumn(2 + i).width = 4; // 列の幅を調整
       worksheet.getCell(2, 2 + i).value = currentDate.format('MMM DD'); // 日付のフォーマット
-      worksheet.getCell(2, 2 + i).style = titleStyle;
+      //worksheet.getCell(2, 2 + i).style = titleStyle;
       currentDate.add(1, 'days');
     }
 
@@ -127,7 +117,7 @@ const ExportGantt = {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `export2.xlsx`;
+        a.download = `gantt.xlsx`;
         a.click();
         a.remove() 
   },
